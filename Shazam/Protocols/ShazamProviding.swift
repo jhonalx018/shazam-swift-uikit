@@ -8,48 +8,23 @@
 import Foundation
 import Combine
 
-public enum NetworkError: Error {
-    case transportError(Error)
-    case serverError(statusCode: Int)
-    case noData
-    case decodingError(Error)
-    case encodingError(Error)
-}
-
-public typealias Response<R> = Result<R, NetworkError>
-public typealias AnyPublisherRequest<R> = AnyPublisher<Response<R>, Never>
 
 protocol ShazamProviding {
     func searchData(term: String) -> AnyPublisherRequest<ShazamResponse>
 }
 
 extension ShazamProviding {
+    /// Perform a request to lookup on `Shazam` a specific term,  HTTP `GET`
+    /// - Parameter term: term to look up`String`
+    /// - Returns: `AnyPublisherRequest<ShazamResponse>`
     func searchData(term: String) -> AnyPublisherRequest<ShazamResponse> {
-        // Api headers
-        // Get api key https://rapidapi.com/apidojo/api/shazam
-
-        let headers = [
-            "X-RapidAPI-Key": "",
-            "X-RapidAPI-Host": ""
-        ]
-
-        headers.values.forEach {
-            if $0.isEmpty {
-                fatalError("Shazam ApiKeys are required")
-            }
-        }
-
-        var components = URLComponents(string: "https://shazam.p.rapidapi.com/search")!
-        components.queryItems = [
-            URLQueryItem(name: "term", value: term)
-        ]
-
+        let components = URLComponents(url: "https://shazam.p.rapidapi.com/search", params: [
+            ("term", term)
+        ])
         var request = URLRequest(url: components.url!)
-        
         request.httpMethod = "GET"
-        request.allHTTPHeaderFields = headers
 
-        return URLSession.shared.dataTaskPublisher(for: request)
+        return URLSession.shazamRequest(for: &request)
             .map { response -> Response<ShazamResponse> in
                 do {
                     let decoder = JSONDecoder()
@@ -66,20 +41,22 @@ extension ShazamProviding {
     }
 }
 
+/// `ShazamProvider`
 class ShazamProvider: ShazamProviding {
     /// Term to look up on Shazam
     var term = PassthroughSubject<String, Never>()
 
-    /// Api state
+    /// Api request state
     var isLoading = CurrentValueSubject<Bool, Never>(false)
 
     /// Used  to hold Shazam data
     var data = CurrentValueSubject<ShazamResponse, Never>(ShazamResponse(tracks: nil))
 
+    /// Recents terms requested
     var recents = [String]() {
         didSet {
             if oldValue.count > 2 {
-                recents.removeFirst()
+                recents.removeLast()
             }
         }
     }
@@ -95,16 +72,15 @@ class ShazamProvider: ShazamProviding {
     private func commonInit() {
         term
             .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
-            // filter
-            .filter { self.recents.last != $0 && !$0.trimmingCharacters(in: .whitespaces).isEmpty }
+            // Filter whether the term is empty or is the same value as the last term searched
+            .filter { self.recents.first != $0 && !$0.trimmingCharacters(in: .whitespaces).isEmpty }
             // Side effect to update to check if the API is performing a request
-            .map { term -> String in
+            .handleEvents(receiveOutput: {event in
                 self.isLoading.send(true)
-                return term
-            }
+            })
             // In case the term is empty we can clean up the information
             .flatMap(maxPublishers: .max(1), { term ->  AnyPublisherRequest<ShazamResponse> in
-                self.recents.append(term)
+                self.recents.insert(term, at: 0)
 
                 return term.isEmpty ? Just(Result.success(ShazamResponse(tracks: nil))).eraseToAnyPublisher() : self.searchData(term: term)
             })
@@ -121,7 +97,7 @@ class ShazamProvider: ShazamProviding {
     }
 
     deinit {
-        // remove subscriptions
+        // Remove subscriptions
         subscriptions.removeAll()
     }
 }

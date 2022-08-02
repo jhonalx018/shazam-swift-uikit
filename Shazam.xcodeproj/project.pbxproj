@@ -21,6 +21,9 @@
 		78684B352891A4420071EFE3 /* MusicList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78684B342891A4420071EFE3 /* MusicList.swift */; };
 		78684B372891A4ED0071EFE3 /* MusicListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78684B362891A4ED0071EFE3 /* MusicListCell.swift */; };
 		78684B392891B8800071EFE3 /* UIImageView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78684B382891B8800071EFE3 /* UIImageView+Extensions.swift */; };
+		78B62F992899A02D0046CB54 /* ApiCallType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78B62F982899A02C0046CB54 /* ApiCallType.swift */; };
+		78B62F9B2899A1330046CB54 /* URLSessions+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78B62F9A2899A1330046CB54 /* URLSessions+Extensions.swift */; };
+		78B62F9D2899A3E90046CB54 /* URLComponents+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78B62F9C2899A3E90046CB54 /* URLComponents+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +43,9 @@
 		78684B342891A4420071EFE3 /* MusicList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicList.swift; sourceTree = "<group>"; };
 		78684B362891A4ED0071EFE3 /* MusicListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicListCell.swift; sourceTree = "<group>"; };
 		78684B382891B8800071EFE3 /* UIImageView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extensions.swift"; sourceTree = "<group>"; };
+		78B62F982899A02C0046CB54 /* ApiCallType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiCallType.swift; sourceTree = "<group>"; };
+		78B62F9A2899A1330046CB54 /* URLSessions+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSessions+Extensions.swift"; sourceTree = "<group>"; };
+		78B62F9C2899A3E90046CB54 /* URLComponents+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLComponents+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +78,7 @@
 		78684B0D288EEBEE0071EFE3 /* Shazam */ = {
 			isa = PBXGroup;
 			children = (
+				78B62F972899A01A0046CB54 /* TypeDefinition */,
 				78684B26288EEDE50071EFE3 /* Presentation */,
 				78684B25288EEDD10071EFE3 /* Models */,
 				78684B24288EEDCA0071EFE3 /* Extensions */,
@@ -101,6 +108,8 @@
 				78684B2B288EEFBB0071EFE3 /* UIView+Extensions.swift */,
 				78684B31289198650071EFE3 /* UIImage+Extensions.swift */,
 				78684B382891B8800071EFE3 /* UIImageView+Extensions.swift */,
+				78B62F9A2899A1330046CB54 /* URLSessions+Extensions.swift */,
+				78B62F9C2899A3E90046CB54 /* URLComponents+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -145,6 +154,14 @@
 				78684B362891A4ED0071EFE3 /* MusicListCell.swift */,
 			);
 			path = MusicList;
+			sourceTree = "<group>";
+		};
+		78B62F972899A01A0046CB54 /* TypeDefinition */ = {
+			isa = PBXGroup;
+			children = (
+				78B62F982899A02C0046CB54 /* ApiCallType.swift */,
+			);
+			path = TypeDefinition;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -221,9 +238,12 @@
 				78684B352891A4420071EFE3 /* MusicList.swift in Sources */,
 				78684B30288F0B9D0071EFE3 /* ShazamResponseModel.swift in Sources */,
 				78684B392891B8800071EFE3 /* UIImageView+Extensions.swift in Sources */,
+				78B62F9D2899A3E90046CB54 /* URLComponents+Extensions.swift in Sources */,
 				78684B2A288EEE500071EFE3 /* SearchBarView.swift in Sources */,
+				78B62F992899A02D0046CB54 /* ApiCallType.swift in Sources */,
 				78684B372891A4ED0071EFE3 /* MusicListCell.swift in Sources */,
 				78684B13288EEBEE0071EFE3 /* ViewController.swift in Sources */,
+				78B62F9B2899A1330046CB54 /* URLSessions+Extensions.swift in Sources */,
 				78684B2C288EEFBB0071EFE3 /* UIView+Extensions.swift in Sources */,
 				78684B0F288EEBEE0071EFE3 /* AppDelegate.swift in Sources */,
 				78684B2E288EF7000071EFE3 /* ShazamProviding.swift in Sources */,

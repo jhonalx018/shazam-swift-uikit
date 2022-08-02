@@ -14,13 +14,18 @@ protocol SearchBarDelegate: AnyObject {
 }
 
 class SearchBarView: UIStackView {
+    /// NOTE: Instead of using a `delegate pattern we can just use a `Reactive-Programing` here
     weak var delegate: SearchBarDelegate? = nil
 
     /// Provider
-    var shazamProvider = ShazamProvider()
+    private var shazamProvider = ShazamProvider()
 
     /// Subscriptions
     private var subscriptions: Set<AnyCancellable> = []
+
+    var recents: [String] {
+        self.shazamProvider.recents
+    }
 
     /// Loading Icon
     private lazy var loadingIcon: UIImageView = {
