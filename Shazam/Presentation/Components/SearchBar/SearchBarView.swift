@@ -14,11 +14,11 @@ protocol SearchBarDelegate: AnyObject {
 }
 
 class SearchBarView: UIStackView {
-    /// NOTE: Instead of using a `delegate pattern we can just use a `Reactive-Programing` here
+    // MARK: - NOTE: Instead of using a `delegate pattern we can just use a `Reactive-Programing` here
     weak var delegate: SearchBarDelegate? = nil
 
     /// Provider
-    private var shazamProvider = ShazamProvider()
+    private let shazamProvider = ShazamProvider()
 
     /// Subscriptions
     private var subscriptions: Set<AnyCancellable> = []
@@ -81,28 +81,26 @@ class SearchBarView: UIStackView {
     }
 
     deinit {
+        // Remove subscriptions
         subscriptions.removeAll()
     }
 
     private func commonInit() {
         translatesAutoresizingMaskIntoConstraints = false
-
         axis = .horizontal
         distribution = .fill
         spacing = 10
-
-        addArrangedSubview(searchTextField)
-        addArrangedSubview(loadingIcon)
-
         isLayoutMarginsRelativeArrangement = true
         directionalLayoutMargins = NSDirectionalEdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20)
 
+        addArrangedSubview(searchTextField)
+        addArrangedSubview(loadingIcon)
         NSLayoutConstraint.activate([
-            searchTextField.heightAnchor.constraint(equalToConstant: 30),
-            loadingIcon.heightAnchor.constraint(equalToConstant: 30)
+            self.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
 
+    /// Listen when textfield value change
     @objc private func searchValueDidChange() {
         guard let value = searchTextField.text else {
             return

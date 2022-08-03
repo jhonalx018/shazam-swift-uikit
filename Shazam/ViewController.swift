@@ -23,8 +23,8 @@ class ViewController: UIViewController {
         return label
     }()
 
+    // TODO: Refactor move this declaration to another class definition
     /// Content to display the recents terms searched
-    /// TODO: Refactor move this declaration to another class definition
     private lazy var contentRecents: UIStackView = {
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
@@ -39,7 +39,7 @@ class ViewController: UIViewController {
     }()
 
     /// TableView to display the result from shazam
-    /// TODO: Refactor move this declaration to another class definition
+    // TODO: Refactor move this declaration to another class definition
     private lazy var tableView: UITableView = {
         let table = UITableView()
         table.register(MusicListCell.self, forCellReuseIdentifier:  String(describing: MusicListCell.self))
@@ -104,7 +104,11 @@ class ViewController: UIViewController {
     }
 }
 
+// MARK: DataTable delegate
+
 extension ViewController: UITableViewDelegate {}
+
+// MARK: DataTable DataSource
 
 extension ViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -138,6 +142,8 @@ extension ViewController: UITableViewDataSource {
         }
     }
 }
+
+// MARK: SearchView delegate
 
 extension ViewController: SearchBarDelegate {
     func didDataChange(data: [Hits]) {

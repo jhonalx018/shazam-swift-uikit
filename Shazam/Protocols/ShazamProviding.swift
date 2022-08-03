@@ -79,11 +79,7 @@ class ShazamProvider: ShazamProviding {
                 self.isLoading.send(true)
             })
             // In case the term is empty we can clean up the information
-            .flatMap(maxPublishers: .max(1), { term ->  AnyPublisherRequest<ShazamResponse> in
-                self.recents.insert(term, at: 0)
-
-                return term.isEmpty ? Just(Result.success(ShazamResponse(tracks: nil))).eraseToAnyPublisher() : self.searchData(term: term)
-            })
+            .flatMap(maxPublishers: .max(1), self.searchData)
             .sink(receiveValue: { value in
                 self.isLoading.send(false)
                 
