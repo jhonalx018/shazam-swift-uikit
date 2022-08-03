@@ -9,7 +9,7 @@ import UIKit
 
 class ViewController: UIViewController {
     /// Search UIView.
-    private lazy var searchBar = SearchBarView()
+    private lazy var searchBarView = SearchBarView()
 
     /// Used  to hold Shazam data
     var data = [Hits]()
@@ -38,8 +38,8 @@ class ViewController: UIViewController {
         return stack
     }()
 
-    /// TableView to display the result from shazam
     // TODO: Refactor move this declaration to another class definition
+    /// TableView to display the result from shazam
     private lazy var tableView: UITableView = {
         let table = UITableView()
         table.register(MusicListCell.self, forCellReuseIdentifier:  String(describing: MusicListCell.self))
@@ -61,13 +61,13 @@ class ViewController: UIViewController {
             searchLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15),
         ])
 
-        view.addSubview(view: searchBar, with: [
-            searchBar.widthAnchor.constraint(equalTo: view.widthAnchor),
-            searchBar.topAnchor.constraint(equalTo: searchLabel.bottomAnchor)
+        view.addSubview(view: searchBarView, with: [
+            searchBarView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            searchBarView.topAnchor.constraint(equalTo: searchLabel.bottomAnchor)
         ])
 
         view.addSubview(view: contentRecents, with: [
-            contentRecents.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
+            contentRecents.topAnchor.constraint(equalTo: searchBarView.bottomAnchor),
             contentRecents.widthAnchor.constraint(equalTo: view.widthAnchor)
         ])
 
@@ -79,7 +79,7 @@ class ViewController: UIViewController {
 
         tableView.delegate = self
         tableView.dataSource = self
-        searchBar.delegate = self
+        searchBarView.delegate = self
     }
 
     private func reloadRecentsTermsSearched() {
@@ -88,7 +88,7 @@ class ViewController: UIViewController {
                 $0.removeFromSuperview()
             }
 
-            self.searchBar.recents.forEach { item in
+            self.searchBarView.recents.forEach { item in
                 let label = UILabel()
                 label.translatesAutoresizingMaskIntoConstraints = false
                 label.font = UIFont.systemFont(ofSize: 12.0)
@@ -147,9 +147,9 @@ extension ViewController: UITableViewDataSource {
 
 extension ViewController: SearchBarDelegate {
     func didDataChange(data: [Hits]) {
-        self.reloadRecentsTermsSearched()
-        self.data = data
         self.animatedRows = []
+        self.data = data
+        self.reloadRecentsTermsSearched()
         self.tableView.reloadData()
     }
 }

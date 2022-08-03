@@ -18,13 +18,13 @@ class SearchBarView: UIStackView {
     weak var delegate: SearchBarDelegate? = nil
 
     /// Provider
-    private let shazamProvider = ShazamProvider()
+    private var shazamProvider: ShazamProvider?
 
     /// Subscriptions
     private var subscriptions: Set<AnyCancellable> = []
 
     var recents: [String] {
-        self.shazamProvider.recents
+        self.shazamProvider?.recents ?? []
     }
 
     /// Loading Icon
@@ -48,17 +48,18 @@ class SearchBarView: UIStackView {
         return textField
     }()
 
-    init() {
+    init(provider: ShazamProvider = ShazamProvider()) {
         super.init(frame: .zero)
+        self.shazamProvider = provider
         commonInit()
 
-        shazamProvider.isLoading.sink(receiveValue: { state in
+        shazamProvider?.isLoading.sink(receiveValue: { state in
             self.animatedLoading(state)
         }).store(in: &subscriptions)
 
-        shazamProvider.data
-            .sink(receiveValue: { data in
-            self.delegate?.didDataChange(data: data.tracks?.hits ?? [])
+        shazamProvider?.data
+            .sink(receiveValue: { shazamResponse in
+            self.delegate?.didDataChange(data: shazamResponse.tracks?.hits ?? [])
         }).store(in: &subscriptions)
     }
 
@@ -88,7 +89,6 @@ class SearchBarView: UIStackView {
     private func commonInit() {
         translatesAutoresizingMaskIntoConstraints = false
         axis = .horizontal
-        distribution = .fill
         spacing = 10
         isLayoutMarginsRelativeArrangement = true
         directionalLayoutMargins = NSDirectionalEdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20)
@@ -96,7 +96,7 @@ class SearchBarView: UIStackView {
         addArrangedSubview(searchTextField)
         addArrangedSubview(loadingIcon)
         NSLayoutConstraint.activate([
-            self.heightAnchor.constraint(equalToConstant: 50)
+            searchTextField.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
 
@@ -106,6 +106,6 @@ class SearchBarView: UIStackView {
             return
         }
 
-        shazamProvider.term.send(value)
+        shazamProvider?.term.send(value)
     }
 }

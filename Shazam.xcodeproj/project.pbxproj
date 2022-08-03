@@ -24,6 +24,7 @@
 		78B62F992899A02D0046CB54 /* ApiCallType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78B62F982899A02C0046CB54 /* ApiCallType.swift */; };
 		78B62F9B2899A1330046CB54 /* URLSessions+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78B62F9A2899A1330046CB54 /* URLSessions+Extensions.swift */; };
 		78B62F9D2899A3E90046CB54 /* URLComponents+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78B62F9C2899A3E90046CB54 /* URLComponents+Extensions.swift */; };
+		78FD8E27289AEBB80009A064 /* URLRequest+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FD8E26289AEBB80009A064 /* URLRequest+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 		78B62F982899A02C0046CB54 /* ApiCallType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiCallType.swift; sourceTree = "<group>"; };
 		78B62F9A2899A1330046CB54 /* URLSessions+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSessions+Extensions.swift"; sourceTree = "<group>"; };
 		78B62F9C2899A3E90046CB54 /* URLComponents+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLComponents+Extensions.swift"; sourceTree = "<group>"; };
+		78FD8E26289AEBB80009A064 /* URLRequest+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLRequest+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +112,7 @@
 				78684B382891B8800071EFE3 /* UIImageView+Extensions.swift */,
 				78B62F9A2899A1330046CB54 /* URLSessions+Extensions.swift */,
 				78B62F9C2899A3E90046CB54 /* URLComponents+Extensions.swift */,
+				78FD8E26289AEBB80009A064 /* URLRequest+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -238,6 +241,7 @@
 				78684B352891A4420071EFE3 /* MusicList.swift in Sources */,
 				78684B30288F0B9D0071EFE3 /* ShazamResponseModel.swift in Sources */,
 				78684B392891B8800071EFE3 /* UIImageView+Extensions.swift in Sources */,
+				78FD8E27289AEBB80009A064 /* URLRequest+Extensions.swift in Sources */,
 				78B62F9D2899A3E90046CB54 /* URLComponents+Extensions.swift in Sources */,
 				78684B2A288EEE500071EFE3 /* SearchBarView.swift in Sources */,
 				78B62F992899A02D0046CB54 /* ApiCallType.swift in Sources */,

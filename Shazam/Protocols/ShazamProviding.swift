@@ -10,26 +10,29 @@ import Combine
 
 
 protocol ShazamProviding {
-    func searchData(term: String) -> AnyPublisherRequest<ShazamResponse>
+    func searchData(with term: String) -> AnyPublisherRequest<ShazamResponse>
+
+    var term: PassthroughSubject<String, Never> { get set }
+    var isLoading: CurrentValueSubject<Bool, Never> { get set }
+    var recents: [String] { get set }
+    var data: CurrentValueSubject<ShazamResponse, Never> { get set }
 }
 
 extension ShazamProviding {
     /// Perform a request to lookup on `Shazam` a specific term,  HTTP `GET`
     /// - Parameter term: term to look up`String`
     /// - Returns: `AnyPublisherRequest<ShazamResponse>`
-    func searchData(term: String) -> AnyPublisherRequest<ShazamResponse> {
+    func searchData(with term: String) -> AnyPublisherRequest<ShazamResponse> {
         let components = URLComponents(url: "https://shazam.p.rapidapi.com/search", params: [
             ("term", term)
         ])
-        var request = URLRequest(url: components.url!)
-        request.httpMethod = "GET"
+        var request = URLRequest(url: components.url!, method: .GET)
 
-        return URLSession.shazamRequest(for: &request)
+        return URLSession.shazamApiPerformCall(with: &request)
             .map { response -> Response<ShazamResponse> in
                 do {
                     let decoder = JSONDecoder()
                     let data = try decoder.decode(ShazamResponse.self, from: response.data)
-
                     return .success(data)
                 } catch let error {
                     return .failure(.encodingError(error))
@@ -75,8 +78,9 @@ class ShazamProvider: ShazamProviding {
             // Filter whether the term is empty or is the same value as the last term searched
             .filter { self.recents.first != $0 && !$0.trimmingCharacters(in: .whitespaces).isEmpty }
             // Side effect to update to check if the API is performing a request
-            .handleEvents(receiveOutput: {event in
+            .handleEvents(receiveOutput: { term in
                 self.isLoading.send(true)
+                self.recents.insert(term, at: 0)
             })
             // In case the term is empty we can clean up the information
             .flatMap(maxPublishers: .max(1), self.searchData)
